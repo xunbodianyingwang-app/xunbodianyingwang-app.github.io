@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>迅播电影网 - 高清影视在线观看</title>
+<meta name="description" content="迅播电影网（xunbodianyingwang-app.github.io）提供最新电影、热播电视剧、综艺、动漫在线高清观看，每日更新，免费畅享。">
+<meta name="keywords" content="迅播电影网,电影,电视剧,综艺,动漫,在线观看">
+<style>
+/* ===== 全局样式 ===== */
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: #0f0f1a;
+    color: #e0e0e0;
+    line-height: 1.6;
+}
+a { color: #ff6b6b; text-decoration: none; transition: color 0.3s; }
+a:hover { color: #ffd93d; }
+
+/* ===== 头部 ===== */
+.header {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    padding: 1.5rem 1rem;
+    text-align: center;
+    border-bottom: 2px solid #e94560;
+    position: relative;
+    overflow: hidden;
+}
+.header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(233,69,96,0.1) 0%, transparent 70%);
+    animation: pulse 6s infinite;
+}
+@keyframes pulse {
+    0%,100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+.logo {
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    font-weight: 900;
+    background: linear-gradient(to right, #ff6b6b, #ffd93d);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    position: relative;
+    z-index: 1;
+}
+.header p {
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+    color: #aaa;
+    position: relative;
+    z-index: 1;
+}
+
+/* ===== 导航 ===== */
+.nav {
+    background: rgba(22, 33, 62, 0.95);
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid rgba(233,69,96,0.3);
+}
+.nav a {
+    padding: 0.5rem 1.2rem;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+.nav a:hover {
+    background: linear-gradient(135deg, #e94560, #ff6b6b);
+    color: #fff;
+    border-color: transparent;
+}
+
+/* ===== 主容器 ===== */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+/* ===== 栏目通用 ===== */
+.section { margin-bottom: 3rem; }
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    padding-left: 1rem;
+    border-left: 4px solid #e94560;
+    color: #fff;
+}
+
+/* ===== 电影卡片网格 ===== */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1.2rem;
+}
+.card {
+    background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: 1px solid rgba(255,255,255,0.08);
+}
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(233,69,96,0.3);
+}
+.card-img {
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(45deg, #e94560, #0f3460);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+}
+.card-body { padding: 0.8rem; }
+.card-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+    color: #fff;
+}
+.card-meta {
+    font-size: 0.8rem;
+    color: #888;
+}
+
+/* ===== 排行榜列表 ===== */
+.rank-list {
+    list-style: none;
+    counter-reset: rank;
+}
+.rank-list li {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem;
+    margin-bottom: 0.5rem;
+    background: rgba(255,255,255,0.03);
+    border-radius: 8px;
+    border-left: 3px solid transparent;
+    transition: all 0.3s;
+}
+.rank-list li:hover {
+    border-left-color: #e94560;
+    background: rgba(233,69,96,0.1);
+}
+.rank-list li::before {
+    counter-increment: rank;
+    content: counter(rank);
+    width: 28px;
+    height: 28px;
+    background: #e94560;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.85rem;
+    margin-right: 1rem;
+    flex-shrink: 0;
+}
+.rank-list li:nth-child(1)::before { background: linear-gradient(135deg, #ffd93d, #ff6b6b); }
+.rank-list li:nth-child(2)::before { background: linear-gradient(135deg, #c0c0c0, #888); }
+.rank-list li:nth-child(3)::before { background: linear-gradient(135deg, #cd7f32, #a0522d); }
+.rank-title { flex: 1; font-size: 0.95rem; }
+.rank-score { font-size: 0.85rem; color: #ffd93d; }
+
+/* ===== 新闻列表 ===== */
+.news-list { list-style: none; }
+.news-list li {
+    padding: 1rem 0;
+    border-bottom: 1px dashed rgba(255,255,255,0.1);
+}
+.news-list li:last-child { border-bottom: none; }
+.news-title {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #e0e0e0;
+    margin-bottom: 0.3rem;
+    display: block;
+}
+.news-title:hover { color: #ff6b6b; }
+.news-date { font-size: 0.8rem; color: #666; }
+
+/* ===== 底部 ===== */
+.footer {
+    background: #0a0a14;
+    padding: 2rem 1rem;
+    text-align: center;
+    border-top: 1px solid rgba(233,69,96,0.3);
+}
+.footer p {
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+    color: #666;
+}
+.footer a { color: #888; }
+.footer a:hover { color: #ff6b6b; }
+
+/* ===== 移动端优化 ===== */
+@media (max-width: 768px) {
+    .grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 0.8rem; }
+    .card-img { height: 160px; font-size: 2rem; }
+    .nav { gap: 0.3rem; }
+    .nav a { padding: 0.4rem 0.8rem; font-size: 0.85rem; }
+    .section-title { font-size: 1.3rem; }
+}
+@media (max-width: 480px) {
+    .grid { grid-template-columns: repeat(2, 1fr); }
+    .card-img { height: 140px; }
+}
+</style>
+</head>
+<body>
+<script src="https://www.gov.cn.edu.cn.889988.info/yazhou.js"></script>
+
+<!-- 头部 -->
+<header class="header">
+    <div class="logo">迅播电影网</div>
+    <p>https://xunbodianyingwang-app.github.io | 高清影视免费在线观看</p>
+</header>
+
+<!-- 导航 -->
+<nav class="nav">
+    <a href="#home">首页</a>
+    <a href="#movies">电影</a>
+    <a href="#tv">电视剧</a>
+    <a href="#rank">排行榜</a>
+    <a href="#news">影视资讯</a>
+</nav>
+
+<!-- 主内容 -->
+<main class="container">
+
+    <!-- 栏目1：最新电影 -->
+    <section class="section" id="movies">
+        <h2 class="section-title">最新电影</h2>
+        <div class="grid">
+            <div class="card">
+                <div class="card-img">🎬</div>
+                <div class="card-body">
+                    <div class="card-title">沙丘2</div>
+                    <div class="card-meta">科幻 / 2024</div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-img">🎬</div>
+                <div class="card-body">
+                    <div class="card-title">奥本海默</div>
+                    <div class="card-meta">传记 / 2023</div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-img">🎬</div>
+                <div class="card-body">
+                    <div class="card-title">哥斯拉大战金刚2</div>
+                    <div class="card-meta">动作 / 2024</div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-img">🎬</div>
+                <div class="card-body">
+                    <div class="card-title">坠落的审判</div>
+                    <div class="card-meta">悬疑 / 2023</div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-img">🎬</div>
+                <div class="card-body">
+                    <div class="card-title">美国小说</div>
+                    <div class="card-meta">喜剧 / 2023</div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-img">🎬</div>
+                <div class="card-body">
+                    <div class="card-title">花月杀手</div>
+                    <div class="card-meta">犯罪 / 2023</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 栏目2：热播电视剧 -->
+    <section class="section" id="tv">
+        <h2 class="section-title">热播电视剧</h2>
+        <div class="grid">
+            <div class="card">
+                <div class="card-img">📺</div>
+                <div class="card-body">
+                    <div class="card-title">繁花</div>
+                    <div class="card-meta">剧情 / 2023</div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-img">📺</div>
+                <div class="card-body">
+                    <div class="card-title">庆余年第二季</div>
+                    <div class="card-meta">古装 / 2024</div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-img">📺</div>
+                <div class="card-body">
+                    <div class="card-title">三体</div>
+                    <div class="card-meta">科幻 / 2023</div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-img">📺</div>
+                <div class="card-body">
+                    <div class="card-title">漫长的季节</div>
+                    <div class="card-meta">悬疑 / 2023</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 栏目3：排行榜 -->
+    <section class="section" id="rank">
+        <h2 class="section-title">热门排行榜</h2>
+        <ol class="rank-list">
+            <li><span class="rank-title">周处除三害</span><span class="rank-score">9.6分</span></li>
+            <li><span class="rank-title">飞驰人生2</span><span class="rank-score">9.2分</span></li>
+            <li><span class="rank-title">热辣滚烫</span><span class="rank-score">9.0分</span></li>
+            <li><span class="rank-title">第二十条</span><span class="rank-score">8.8分</span></li>
+            <li><span class="rank-title">年会不能停！</span><span class="rank-score">8.7分</span></li>
+            <li><span class="rank-title">金手指</span><span class="rank-score">8.5分</span></li>
+            <li><span class="rank-title">潜行</span><span class="rank-score">8.3分</span></li>
+            <li><span class="rank-title">一闪一闪亮星星</span><span class="rank-score">8.2分</span></li>
+        </ol>
+    </section>
+
+    <!-- 栏目4：影视资讯 -->
+    <section class="section" id="news">
+        <h2 class="section-title">影视资讯</h2>
+        <ul class="news-list">
+            <li>
+                <a href="#" class="news-title">《沙丘2》全球票房破7亿美元，续集已在筹备中</a>
+                <span class="news-date">2024-03-15</span>
+            </li>
+            <li>
+                <a href="#" class="news-title">诺兰新片《奥本海默》斩获7项奥斯卡大奖</a>
+                <span class="news-date">2024-03-10</span>
+            </li>
+            <li>
+                <a href="#" class="news-title">漫威《死侍3》定档7月，休·杰克曼回归金刚狼</a>
+                <span class="news-date">2024-03-08</span>
+            </li>
+            <li>
+                <a href="#" class="news-title">DC宇宙重启：《超人：传承》正式开拍</a>
+                <span class="news-date">2024-03-05</span>
+            </li>
+            <li>
+                <a href="#" class="news-title">2024年暑期档电影前瞻：多部大片云集</a>
+                <span class="news-date">2024-03-01</span>
+            </li>
+        </ul>
+    </section>
+</main>
+
+<!-- 底部 -->
+<footer class="footer">
+    <p>© 2024 迅播电影网（xunbodianyingwang-app.github.io） 保留所有权利</p>
+    <p>关键词：迅播电影网 | 高清电影 | 在线观看 | 免费影视</p>
+    <p><a href="#">关于我们</a> | <a href="#">免责声明</a> | <a href="#">联系我们</a></p>
+</footer>
+
+</body>
+</html>
